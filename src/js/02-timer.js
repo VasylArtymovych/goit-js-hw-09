@@ -12,6 +12,7 @@ const refs = {
 
 refs.button.setAttribute('disabled', 'true');
 let isTimerRuning = false;
+let timerId = null;
 
 const options = {
     
@@ -20,10 +21,8 @@ const options = {
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {   
-
-        const convertSelectedDate = selectedDates[0].getTime();
         
-        if (convertSelectedDate <= (new Date().getTime())){
+        if (selectedDates[0].getTime() <= (new Date().getTime())){
             
             Notify.warning('Please choose a date in the future');  
 
@@ -39,10 +38,9 @@ const options = {
 
             isTimerRuning = true;
 
-            setInterval(() => {
-                const currentDate = new Date();
-                const convertCurrentDate = currentDate.getTime();
-                const diference = convertSelectedDate - convertCurrentDate;
+            timerId = setInterval(() => {
+                let currentDate = (new Date()).getTime();
+                let diference = (selectedDates[0].getTime()) - currentDate;
 
                 refs.days.textContent = convertMs(diference).days;
                 refs.hours.textContent = convertMs(diference).hours;
