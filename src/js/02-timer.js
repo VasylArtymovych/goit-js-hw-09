@@ -3,7 +3,6 @@ import "flatpickr/dist/flatpickr.min.css";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const refs = {
-    input: document.querySelector('#datetime-picker'),
     button: document.querySelector('button[data-start]'),
     days: document.querySelector('[data-days]'),
     hours: document.querySelector('[data-hours]'),
@@ -25,10 +24,9 @@ const options = {
         const convertSelectedDate = selectedDates[0].getTime();
         
         if (convertSelectedDate <= (new Date().getTime())){
-            // alert("Please choose a date in the future");
-            Notify.warning('Please choose a date in the future');
-            // Notiflix.Report.warning('Title', 'Message', 'Button Text');
             
+            Notify.warning('Please choose a date in the future');  
+
             selectedDates[0] = new Date();
             return; 
         };
@@ -38,7 +36,7 @@ const options = {
 
         function onBtnClick(){
             if(isTimerRuning) return;
-            
+
             isTimerRuning = true;
 
             setInterval(() => {
@@ -57,6 +55,19 @@ const options = {
 };
 
 flatpickr('#datetime-picker', options);
+
+Notify.init({
+    width: '280px',
+    position: 'center-top',
+    distance: '25px',
+    timeout: 3000,
+    cssAnimationStyle: 'zoom',
+    warning: {
+        background: 'rgba(255, 72, 0, 0.945)',
+        textColor: '#fff',
+        notiflixIconColor: 'rgba(0,0,0,0.4)',
+    },
+});
 
 function convertMs(ms) {
     // Number of milliseconds per unit of time
@@ -81,15 +92,3 @@ function addLeadingZero(value){
     return String(value).padStart(2, '0');
 };
 
-Notify.init({
-    width: '280px',
-    position: 'center-top',
-    distance: '25px',
-    timeout: 3000,
-    cssAnimationStyle: 'zoom',
-    warning: {
-        background: 'rgba(255, 72, 0, 0.945)',
-        textColor: '#fff',
-        notiflixIconColor: 'rgba(0,0,0,0.4)',
-    },
-});
