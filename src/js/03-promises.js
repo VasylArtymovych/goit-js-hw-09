@@ -1,10 +1,10 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-
 const formRef =  document.querySelector('.form');
 
 formRef.addEventListener('submit', onSubmitClick);
 
+// submit handler
 function onSubmitClick(evt){
   evt.preventDefault();
 
@@ -15,7 +15,6 @@ function onSubmitClick(evt){
   let position = 1;
 
   for (let i = 1; i <= amount; i+=1){
-
   createPromise(position, delay)
   .then(({ position, delay }) => {
     Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
@@ -44,6 +43,7 @@ function createPromise(position, delay) {
   });
 };
 
+// Notify packege options:
 Notify.init({
   width: '300px',
   timeout: 6000,
