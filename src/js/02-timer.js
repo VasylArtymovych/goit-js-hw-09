@@ -10,64 +10,62 @@ const refs = {
     seconds: document.querySelector('[data-seconds]')
 };
 
+refs.button.addEventListener('click', onBtnClick);
+
 refs.button.setAttribute('disabled', 'true');
 let isTimerRuning = false;
 let timerId = null;
-let userData = null;
+let userSelectedDate = null;
 
+// options for instance (date-view):
 const options = {
-    
     enableTime: true,
     time_24hr: true,
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {   
-        console.log(selectedDates[0]);
-        if (selectedDates[0].getTime() <= (new Date().getTime())){
-            
+    
+        if (selectedDates[0].getTime() <= Date.now()){
             Notify.warning('Please choose a date in the future');  
-
-            // selectedDates[0] = new Date();
             return; 
         };
-        userData = selectedDates[0];
-
+        
+        userSelectedDate = selectedDates[0];
         refs.button.removeAttribute('disabled');
-        refs.button.addEventListener('click', onBtnClick);
-
-        function onBtnClick(){
-            if(isTimerRuning) return;
-
-            isTimerRuning = true;
-            
-            timerId = setInterval(() => {
-                let currentDate = (new Date()).getTime();
-                let diference = (userData.getTime()) - currentDate;
-
-                refs.days.textContent = convertMs(diference).days;
-                refs.hours.textContent = convertMs(diference).hours;
-                refs.minutes.textContent = convertMs(diference).minutes;
-                refs.seconds.textContent = convertMs(diference).seconds;
-                
-            }, 1000);
-        };
     },
-};
+    onOpen(){
 
+        clearInterval(timerId);
+        isTimerRuning = false;
+        refs.button.setAttribute('disabled', 'true');
+
+        refs.days.textContent = '00';
+        refs.hours.textContent = '00';
+        refs.minutes.textContent = '00';
+        refs.seconds.textContent = '00';
+        
+    }
+};
+//makes instance for date-view: 
 flatpickr('#datetime-picker', options);
 
-Notify.init({
-    width: '280px',
-    position: 'center-top',
-    distance: '25px',
-    timeout: 3000,
-    cssAnimationStyle: 'zoom',
-    warning: {
-        background: 'rgba(255, 72, 0, 0.945)',
-        textColor: '#fff',
-        notiflixIconColor: 'rgba(0,0,0,0.4)',
-    },
-});
+function onBtnClick(){
+    if(isTimerRuning) return;
+    
+    isTimerRuning = true;
+
+    timerId = setInterval(() => {
+        let currentDate = Date.now();
+        let convertUserSelectedDate = userSelectedDate.getTime();
+        let diference = convertUserSelectedDate - currentDate;
+
+        refs.days.textContent = convertMs(diference).days;
+        refs.hours.textContent = convertMs(diference).hours;
+        refs.minutes.textContent = convertMs(diference).minutes;
+        refs.seconds.textContent = convertMs(diference).seconds;
+        
+    }, 1000);
+};
 
 function convertMs(ms) {
     // Number of milliseconds per unit of time
@@ -91,4 +89,18 @@ function convertMs(ms) {
 function addLeadingZero(value){
     return String(value).padStart(2, '0');
 };
+
+//Shown(log) messsage view options:
+Notify.init({
+    width: '280px',
+    position: 'center-top',
+    distance: '25px',
+    timeout: 3000,
+    cssAnimationStyle: 'zoom',
+    warning: {
+        background: 'rgba(255, 72, 0, 0.945)',
+        textColor: '#fff',
+        notiflixIconColor: 'rgba(0,0,0,0.4)',
+    },
+});
 
