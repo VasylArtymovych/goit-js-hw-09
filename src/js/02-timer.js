@@ -13,6 +13,7 @@ const refs = {
 refs.button.setAttribute('disabled', 'true');
 let isTimerRuning = false;
 let timerId = null;
+let userData = null;
 
 const options = {
     
@@ -21,14 +22,15 @@ const options = {
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {   
-        
+        console.log(selectedDates[0]);
         if (selectedDates[0].getTime() <= (new Date().getTime())){
             
             Notify.warning('Please choose a date in the future');  
 
-            selectedDates[0] = new Date();
+            // selectedDates[0] = new Date();
             return; 
         };
+        userData = selectedDates[0];
 
         refs.button.removeAttribute('disabled');
         refs.button.addEventListener('click', onBtnClick);
@@ -37,10 +39,10 @@ const options = {
             if(isTimerRuning) return;
 
             isTimerRuning = true;
-
+            
             timerId = setInterval(() => {
                 let currentDate = (new Date()).getTime();
-                let diference = (selectedDates[0].getTime()) - currentDate;
+                let diference = (userData.getTime()) - currentDate;
 
                 refs.days.textContent = convertMs(diference).days;
                 refs.hours.textContent = convertMs(diference).hours;
