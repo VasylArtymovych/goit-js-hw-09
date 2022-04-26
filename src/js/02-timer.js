@@ -34,7 +34,7 @@ const options = {
         refs.button.removeAttribute('disabled');
     },
     onOpen(){
-
+        
         clearInterval(timerId);
         isTimerRuning = false;
         refs.button.setAttribute('disabled', 'true');
@@ -43,12 +43,13 @@ const options = {
         refs.hours.textContent = '00';
         refs.minutes.textContent = '00';
         refs.seconds.textContent = '00';
-        
     }
 };
+
 //makes instance for date-view: 
 flatpickr('#datetime-picker', options);
 
+//Hendle Button Click:
 function onBtnClick(){
     if(isTimerRuning) return;
     

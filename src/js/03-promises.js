@@ -8,14 +8,15 @@ formRef.addEventListener('submit', onSubmitClick);
 function onSubmitClick(evt){
   evt.preventDefault();
 
-  const elements = evt.currentTarget.elements;
-  const amount = Number(elements.amount.value);
-  const step = Number(elements.step.value);
-  let delay = Number(elements.delay.value);
+  const {elements:{delay, step, amount}} = evt.currentTarget;
+
+  const amountPromises = Number(amount.value);
+  const stepOfDelay = Number(step.value);
+  let promiseDelay = Number(delay.value);
   let position = 1;
 
-  for (let i = 1; i <= amount; i+=1){
-  createPromise(position, delay)
+  for (let i = 1; i <= amountPromises; i+=1){
+  createPromise(position, promiseDelay)
   .then(({ position, delay }) => {
     Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
   })
@@ -24,8 +25,9 @@ function onSubmitClick(evt){
   });
 
   position += 1;
-  delay += step;
+  promiseDelay += stepOfDelay;
   };
+  evt.currentTarget.reset();
 };
 
 function createPromise(position, delay) {
