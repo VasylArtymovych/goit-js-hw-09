@@ -16,6 +16,7 @@ function onSubmitClick(evt){
   let position = 1;
 
   for (let i = 1; i <= amountPromises; i+=1){
+
   createPromise(position, promiseDelay)
   .then(({ position, delay }) => {
     Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
@@ -27,6 +28,7 @@ function onSubmitClick(evt){
   position += 1;
   promiseDelay += stepOfDelay;
   };
+  
   evt.currentTarget.reset();
 };
 
@@ -45,7 +47,7 @@ function createPromise(position, delay) {
   });
 };
 
-// Notify packege options:
+// Notify package options:
 Notify.init({
   width: '300px',
   timeout: 6000,
